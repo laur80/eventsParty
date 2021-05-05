@@ -19,6 +19,8 @@ export const AuthProvider = ({ children }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": true,
+        "Access-Control-Allow-Credentials": true,
       },
       body: JSON.stringify({
         identifier,
