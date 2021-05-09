@@ -5,9 +5,10 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Layout from "@/components/Layout";
 import { API_URL } from "@/config/index";
+import { parseCookies } from "@/helpers/index";
 import styles from "@/styles/Form.module.css";
 
-export default function AddEventPage() {
+export default function AddEventPage({ token }) {
   const [values, setValues] = useState({
     name: "",
     performers: "",
@@ -36,11 +37,16 @@ export default function AddEventPage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(values),
     });
 
     if (!res.ok) {
+      if (res.status === 403 || res.status === 401) {
+        toast.error("No token included");
+        return;
+      }
       toast.error("Something Went Wrong");
     } else {
       const evt = await res.json();
@@ -136,4 +142,14 @@ export default function AddEventPage() {
       </form>
     </Layout>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { token } = parseCookies(req);
+
+  return {
+    props: {
+      token,
+    },
+  };
 }
