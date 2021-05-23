@@ -1,2 +1,2 @@
 A CRUD application that uses Strapi CMS for the backend.
-Different users can log in and create custom events.
+You can create a new account and then log in users can authenticate and create, edit and delete custom events
